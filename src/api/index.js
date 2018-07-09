@@ -9,6 +9,18 @@ export default ({ config, db }) => {
 	// mount the facets resource
 	api.use('/facets', facets({ config, db }));
 
+	api.get('/users', (req, res) => {
+		const queryString = 'SELECT id, name FROM user WHERE source=\'facebook\'';
+		db.query(queryString, (err, rows) => {
+			if(err) {
+				console.log(err);
+				res.status(500).json({ message: 'There was a problem with the database ☹️'});
+			} else if(rows.length) {
+				res.json({ data: rows });
+			}
+		})
+	});
+
 	// perhaps expose some API metadata at the root
 	api.post('/broadcast', (req, res) => {
 		const message = req.body.message;
