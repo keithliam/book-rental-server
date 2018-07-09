@@ -15,6 +15,8 @@ export default ({ config, db }) => {
 			await functions.checkUser(db, req, res);
 
 			switch(req.body.queryResult.action) {
+				case 'broadcast':
+					return functions.broadcast(db, req, res);
 				default:
 					return res.json({ fulfillmentText: 'Something\'s not right 🤔' });
 			}
