@@ -10,20 +10,21 @@ export default ({ config, db }) => {
 	api.use('/facets', facets({ config, db }));
 
 	// perhaps expose some API metadata at the root
-	api.get('/', async (req, res) => {
-		try {
-			await functions.checkUser(db, req, res);
+	api.post('/broadcast', (req, res) => {
+		const message = req.body.message;
 
-			switch(req.body.queryResult.action) {
-				case 'broadcast':
-					return functions.broadcast(db, req, res);
-				default:
-					return res.json({ fulfillmentText: 'Something\'s not right 🤔' });
+		const queryString = 'SELECT id FROM user WHERE source=\'facebook\'';
+		db.query(queryString, (err, rows) => {
+			if(err) {
+				console.log(err);
+				return res.status(500).json({ message: 'There was a problem with the database ☹️'});
+			} else if(rows.length) {
+				functions.sendToAllFB(rows, message);
+				return res.json({ message: 'Message successfully broadcasted to all users 🙂 '});
+			} else {
+				return res.json({ message: 'I haven\'t talked to anyone in facebook yet 🤷‍♀️'});
 			}
-		} catch(e) {
-			console.log(e)
-			return res.json({ fulfillmentText: 'Something\'s not right 🤔' });
-		}
+		})
 	});
 
 	return api;
