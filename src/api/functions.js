@@ -66,23 +66,9 @@ function pushMessage(id, message) {
 	});
 }
 
-function getIdSource(req) {
-	return new Promise((resolve, reject) => {
-		if(req.body.originalDetectIntentRequest.hasOwnProperty('source') && req.body.originalDetectIntentRequest.source == 'facebook') {
-			const source = req.body.originalDetectIntentRequest.source;
-			const id = req.body.originalDetectIntentRequest.payload.data.sender.id;
-			return resolve([id, source]);
-		} else {
-			const source = 'DialogFlow';
-			const id = req.body.session;
-			return resolve([id, source]);
-		}
-	})
-}
-
 async function sendToAllFb(rows, message) {
 	for(var i = 0; i < rows.length; i++) {
-		pushMessage((await getIdSource(req))[0], message);
+		pushMessage(rows[i].id, message);
 	}
 }
 
