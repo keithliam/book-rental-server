@@ -135,7 +135,7 @@ export default ({ config, db }) => {
 	});
 
 	api.post('/message-users', (req, res) => {
-		const users = req.body.users.map(user => {
+		const users = req.body.id.map(user => {
 			return { id: user };
 		});
 		const message = req.body.message;
