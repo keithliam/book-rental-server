@@ -96,6 +96,7 @@ export function broadcast(db, req, res) {
 			return reject();
 		} else if(rows.length) {
 			sendToAllFB(rows, message);
+			return res.json({ fulfillmentText: 'Message successfully broadcasted to all users 🙂 '});
 		}
 	})
 }
