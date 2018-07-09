@@ -15,7 +15,7 @@ export default ({ config, db }) => {
 			if(err) {
 				console.log(err);
 				res.status(500).json({ message: 'There was a problem with the database ☹️'});
-			} else if(rows.length) {
+			} else {
 				res.json({ data: rows });
 			}
 		})
