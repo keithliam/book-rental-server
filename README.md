@@ -1,57 +1,133 @@
-Express & ES6 REST API Boilerplate
-==================================
+# Book Rental Bot Server API
 
-This is a straightforward boilerplate for building REST APIs with ES6 and Express.
+A DialogFlow webhook created for Messenger using [Graph API](https://developers.facebook.com/docs/graph-api/).
 
-- ES6 support via [babel](https://babeljs.io)
-- REST resources as middleware via [resource-router-middleware](https://github.com/developit/resource-router-middleware)
-- CORS support via [cors](https://github.com/troygoode/node-cors)
-- Body Parsing via [body-parser](https://github.com/expressjs/body-parser)
+## Get list of users
 
-> Tip: If you are using [Mongoose](https://github.com/Automattic/mongoose), you can automatically expose your Models as REST resources using [restful-mongoose](https://git.io/restful-mongoose).
-
-
-
-Getting Started
----------------
-
-```sh
-# clone it
-git clone git@github.com:developit/express-es6-rest-api.git
-cd express-es6-rest-api
-
-# Make it your own
-rm -rf .git && git init && npm init
-
-# Install dependencies
-npm install
-
-# Start development live-reload server
-PORT=8080 npm run dev
-
-# Start production server:
-PORT=8080 npm start
+Request:
 ```
-Docker Support
-------
-```sh
-cd express-es6-rest-api
-
-# Build your docker
-docker build -t es6/api-service .
-#            ^      ^           ^
-#          tag  tag name      Dockerfile location
-
-# run your docker
-docker run -p 8080:8080 es6/api-service
-#                 ^            ^
-#          bind the port    container tag
-#          to your host
-#          machine port   
-
+GET /api/users
+```
+Response: __200__
+```json
+{
+    "data": [
+        {
+            "id": "1",
+            "name": "keith"
+        },
+        {
+            "id": "10",
+            "name": "lyka"
+        },
+        {
+            "id": "11",
+            "name": "angel"
+        }
+    ]
+}
 ```
 
-License
--------
 
-MIT
+
+## Get list of groups
+
+Request:
+```
+GET /api/groups
+```
+Response: __200__
+```json
+{
+    "data": [
+    {
+        "name": "supervisors",
+        "users": [
+        {
+            "id": "13",
+            "name": "almer"
+        }]
+    },
+    {
+        "name": "interns",
+        "users": [
+        {
+            "id": "1",
+            "name": "keith"
+        },
+        {
+            "id": "10",
+            "name": "lyka"
+        }]
+    }]
+}
+```
+
+## Add a group
+
+Request:
+```json
+POST /api/groups
+
+{
+    "name": "supervisors",
+    "users": ["12", "13"]
+}
+```
+Response: __200__
+
+## Delete a group
+
+Request:
+```
+DELETE /api/groups/:name
+	Example: DELETE /api/groups/supervisors
+```
+Response: __200__
+
+## Message a user
+
+Request:
+```json
+POST /api/message-user
+
+{
+    "id": "3",
+    "message": "This is a message"
+}
+```
+Response: __200__
+
+## Message users
+
+Request:
+```json
+POST /api/message-user
+
+{
+    "id": ["1","32","42"],
+    "message": "This is a message"
+}
+```
+Response: __200__
+
+## Message a group
+
+Request:
+```json
+POST /api/message-group
+
+{
+	"name": "supervisors",
+	"message": "This is a message"
+}
+```
+Response: __200__
+
+## Broadcast
+
+Request:
+```
+POST /api/broadcast
+```
+Response: __200__
