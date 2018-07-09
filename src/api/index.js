@@ -116,5 +116,23 @@ export default ({ config, db }) => {
 		})
 	});
 
+	api.post('/message-user', (req, res) => {
+		const id = req.body.id;
+		const message = req.body.message;
+
+		const queryString = 'SELECT id FROM user WHERE source=\'facebook\'';
+		db.query(queryString, (err, rows) => {
+			if(err) {
+				console.log(err);
+				res.status(500).json({ message: 'There was a problem with the database ☹️'});
+			} else if(!rows.length) {
+				res.json({ message: 'User not found in database 🤷‍♀️'});
+			} else {
+				functions.pushMessage(id, message);
+				res.json({ message: 'Message successfully messaged user 🙂 '});
+			}
+		})
+	});
+
 	return api;
 }

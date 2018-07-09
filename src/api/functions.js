@@ -12,7 +12,7 @@ function pushToFacebook(id, payload) {
 		.catch((e) => { console.log(e); });
 }
 
-function pushMessage(id, message) {
+export function pushMessage(id, message) {
 	pushToFacebook(id, {
 		messaging_type: 'UPDATE',
 		recipient: {
