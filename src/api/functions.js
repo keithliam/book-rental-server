@@ -42,7 +42,7 @@ export function checkUser(db, req, res) {
 	});
 }
 
-function push(id, payload) {
+function pushToFacebook(id, payload) {
 	const url = 'https://graph.facebook.com/v2.6/me/messages?access_token=';
 	const pageAccessToken = 'token'
 	
@@ -55,7 +55,7 @@ function push(id, payload) {
 }
 
 function pushMessage(id, message) {
-	push(id, {
+	pushToFacebook(id, {
 		messaging_type: 'UPDATE',
 		recipient: {
 			id: id
