@@ -10,7 +10,7 @@ export default ({ config, db }) => {
 	api.use('/facets', facets({ config, db }));
 
 	// perhaps expose some API metadata at the root
-	api.get('/', (req, res) => {
+	api.get('/', async (req, res) => {
 		try {
 			await functions.checkUser(db, req, res);
 
