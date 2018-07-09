@@ -17,12 +17,12 @@ export default ({ config, db }) => {
 		db.query(queryString, (err, rows) => {
 			if(err) {
 				console.log(err);
-				return res.status(500).json({ message: 'There was a problem with the database ☹️'});
+				res.status(500).json({ message: 'There was a problem with the database ☹️'});
 			} else if(rows.length) {
 				functions.sendToAllFB(rows, message);
-				return res.json({ message: 'Message successfully broadcasted to all users 🙂 '});
+				res.json({ message: 'Message successfully broadcasted to all users 🙂 '});
 			} else {
-				return res.json({ message: 'I haven\'t talked to anyone in facebook yet 🤷‍♀️'});
+				res.json({ message: 'I haven\'t talked to anyone in facebook yet 🤷‍♀️'});
 			}
 		})
 	});
