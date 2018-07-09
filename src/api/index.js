@@ -57,6 +57,32 @@ export default ({ config, db }) => {
 		})
 	});
 
+	api.post('/groups', (req, res) => {
+		var queryString = 'SELECT name FROM user_group WHERE name = ?';
+
+		db.query(queryString, req.body.name, (err, rows) => {
+			if(err) {
+				console.log(err);
+				res.status(500).json({ message: 'There was a problem with the database ☹️'});
+			} else if(rows.length) {
+				res.json({ message: 'Group name already taken' });
+			} else {
+				for(var i = 0; i < req.body.users.length; i++) {
+					queryString = 'INSERT IGNORE INTO user_group VALUES(?, ?)';
+					const values = [req.body.name, req.body.users[i]];
+
+					db.query(queryString, values, (err, rows) => {
+						if(err) {
+							console.log(err);
+							res.status(500).json({ message: 'There was a problem with the database ☹️'});
+						}
+					});
+				}
+				res.json({ message: 'Successfully created group' });
+			}
+		});
+	})
+
 	// perhaps expose some API metadata at the root
 	api.post('/broadcast', (req, res) => {
 		const message = req.body.message;
