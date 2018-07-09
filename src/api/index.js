@@ -83,6 +83,21 @@ export default ({ config, db }) => {
 		});
 	})
 
+	api.delete('/groups/:name', (req, res) => {
+		var queryString = 'DELETE FROM user_group WHERE name = ?';
+
+		db.query(queryString, req.params.name, (err, rows) => {
+			if(err) {
+				console.log(err);
+				res.status(500).json({ message: 'There was a problem with the database ☹️'});
+			} else if(!rows.affectedRows) {
+				res.json({ message: 'Group does not exist' });
+			} else {
+				res.json({ message: 'Successfully deleted group' });
+			}
+		});
+	})
+
 	// perhaps expose some API metadata at the root
 	api.post('/broadcast', (req, res) => {
 		const message = req.body.message;
