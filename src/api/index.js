@@ -134,6 +134,15 @@ export default ({ config, db }) => {
 		})
 	});
 
+	api.post('/message-users', (req, res) => {
+		const users = req.body.users.map(user => {
+			return { id: user };
+		});
+		const message = req.body.message;
+		functions.sendToAllFb(users, message);
+		res.json({ message: 'Message successfully messaged user 🙂 '});
+	});
+
 	api.post('/message-group', (req, res) => {
 		const name = req.body.name;
 		const message = req.body.message;
