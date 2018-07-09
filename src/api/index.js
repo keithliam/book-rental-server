@@ -108,7 +108,7 @@ export default ({ config, db }) => {
 				console.log(err);
 				res.status(500).json({ message: 'There was a problem with the database ☹️'});
 			} else if(rows.length) {
-				functions.sendToAllFB(rows, message);
+				functions.sendToAllFb(rows, message);
 				res.json({ message: 'Message successfully broadcasted to all users 🙂 '});
 			} else {
 				res.json({ message: 'I haven\'t talked to anyone in facebook yet 🤷‍♀️'});
