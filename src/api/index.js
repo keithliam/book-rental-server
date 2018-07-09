@@ -134,5 +134,26 @@ export default ({ config, db }) => {
 		})
 	});
 
+	api.post('/message-group', (req, res) => {
+		const name = req.body.name;
+		const message = req.body.message;
+
+		var queryString = 'SELECT user FROM user_group WHERE name = ?';
+		db.query(queryString, name, (err, rows) => {
+			if(err) {
+				console.log(err);
+				res.status(500).json({ message: 'There was a problem with the database ☹️'});
+			} else if(!rows.length) {
+				res.json({ message: 'Group does not exist 🤷‍♀️'});
+			} else {
+				const users = rows.map(row => {
+					return { id: row.user }
+				});
+				functions.sendToAllFb(users, message);
+				res.json({ message: 'Message successfully messaged the group 🙂 '});
+			}
+		})
+	});
+
 	return api;
 }
