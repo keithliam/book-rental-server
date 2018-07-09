@@ -89,7 +89,7 @@ async function sendToAllFb(rows, message) {
 export function broadcast(db, req, res) {
 	const message = req.body.queryResult.parameters.message;
 
-	const queryString = 'SELECT id FROM user WHERE source = facebook';
+	const queryString = 'SELECT id FROM user WHERE source=\'facebook\'';
 	db.query(queryString, (err, rows) => {
 		if(err) {
 			console.log(err);
