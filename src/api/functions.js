@@ -93,7 +93,7 @@ export function broadcast(db, req, res) {
 	db.query(queryString, (err, rows) => {
 		if(err) {
 			console.log(err);
-			return reject();
+			return res.json({ fulfillmentText: 'There was a problem with the database ☹️'});
 		} else if(rows.length) {
 			sendToAllFB(rows, message);
 			return res.json({ fulfillmentText: 'Message successfully broadcasted to all users 🙂 '});
